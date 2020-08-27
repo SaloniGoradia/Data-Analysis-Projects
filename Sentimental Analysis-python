@@ -1,30 +1,189 @@
-##Test sentiment
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
-import numpy as np
-import pandas as pd
-
-
-# In[3]:
-
-
-df = pd.read_csv(r"C:/Users/sgoradia/Desktop/Python/Amazon_Unlocked_Mobile.csv")
-
-
-# In[4]:
-
-
-df.info()
-
-
-# In[5]:
-
-
-df.head(5)
-
-
-# In[ ]:
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df = pd.read_csv(r\"C:/Users/sgoradia/Desktop/Python/Amazon_Unlocked_Mobile.csv\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 413840 entries, 0 to 413839\n",
+      "Data columns (total 6 columns):\n",
+      " #   Column        Non-Null Count   Dtype  \n",
+      "---  ------        --------------   -----  \n",
+      " 0   Product Name  413840 non-null  object \n",
+      " 1   Brand Name    348669 non-null  object \n",
+      " 2   Price         407907 non-null  float64\n",
+      " 3   Rating        413840 non-null  int64  \n",
+      " 4   Reviews       413778 non-null  object \n",
+      " 5   Review Votes  401544 non-null  float64\n",
+      "dtypes: float64(2), int64(1), object(3)\n",
+      "memory usage: 18.9+ MB\n"
+     ]
+    }
+   ],
+   "source": [
+    "df.info()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Product Name</th>\n",
+       "      <th>Brand Name</th>\n",
+       "      <th>Price</th>\n",
+       "      <th>Rating</th>\n",
+       "      <th>Reviews</th>\n",
+       "      <th>Review Votes</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>\"CLEAR CLEAN ESN\" Sprint EPIC 4G Galaxy SPH-D7...</td>\n",
+       "      <td>Samsung</td>\n",
+       "      <td>199.99</td>\n",
+       "      <td>5</td>\n",
+       "      <td>I feel so LUCKY to have found this used (phone...</td>\n",
+       "      <td>1.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>\"CLEAR CLEAN ESN\" Sprint EPIC 4G Galaxy SPH-D7...</td>\n",
+       "      <td>Samsung</td>\n",
+       "      <td>199.99</td>\n",
+       "      <td>4</td>\n",
+       "      <td>nice phone, nice up grade from my pantach revu...</td>\n",
+       "      <td>0.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>\"CLEAR CLEAN ESN\" Sprint EPIC 4G Galaxy SPH-D7...</td>\n",
+       "      <td>Samsung</td>\n",
+       "      <td>199.99</td>\n",
+       "      <td>5</td>\n",
+       "      <td>Very pleased</td>\n",
+       "      <td>0.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>\"CLEAR CLEAN ESN\" Sprint EPIC 4G Galaxy SPH-D7...</td>\n",
+       "      <td>Samsung</td>\n",
+       "      <td>199.99</td>\n",
+       "      <td>4</td>\n",
+       "      <td>It works good but it goes slow sometimes but i...</td>\n",
+       "      <td>0.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>\"CLEAR CLEAN ESN\" Sprint EPIC 4G Galaxy SPH-D7...</td>\n",
+       "      <td>Samsung</td>\n",
+       "      <td>199.99</td>\n",
+       "      <td>4</td>\n",
+       "      <td>Great phone to replace my lost phone. The only...</td>\n",
+       "      <td>0.0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                        Product Name Brand Name   Price  \\\n",
+       "0  \"CLEAR CLEAN ESN\" Sprint EPIC 4G Galaxy SPH-D7...    Samsung  199.99   \n",
+       "1  \"CLEAR CLEAN ESN\" Sprint EPIC 4G Galaxy SPH-D7...    Samsung  199.99   \n",
+       "2  \"CLEAR CLEAN ESN\" Sprint EPIC 4G Galaxy SPH-D7...    Samsung  199.99   \n",
+       "3  \"CLEAR CLEAN ESN\" Sprint EPIC 4G Galaxy SPH-D7...    Samsung  199.99   \n",
+       "4  \"CLEAR CLEAN ESN\" Sprint EPIC 4G Galaxy SPH-D7...    Samsung  199.99   \n",
+       "\n",
+       "   Rating                                            Reviews  Review Votes  \n",
+       "0       5  I feel so LUCKY to have found this used (phone...           1.0  \n",
+       "1       4  nice phone, nice up grade from my pantach revu...           0.0  \n",
+       "2       5                                       Very pleased           0.0  \n",
+       "3       4  It works good but it goes slow sometimes but i...           0.0  \n",
+       "4       4  Great phone to replace my lost phone. The only...           0.0  "
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head(5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
